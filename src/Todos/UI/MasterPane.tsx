@@ -1,6 +1,6 @@
 import React, { CSSProperties } from "react";
 import TodoPotter from "../Potter/TodoPotter";
-import Todo from "../Potter/Todo";
+import TodoModel from "../Potter/TodoModel";
 
 interface IProps{
     potter: TodoPotter;
@@ -41,7 +41,7 @@ const addTodoButton = () => {
                 type="button" 
                 value="Add Todo" style={addButtonStyle}
                 onClick={() => {
-                     potter.pushToState({adding: true, todoBeingAdded: new Todo()})} 
+                     potter.pushToState({adding: true, todoItemBeingAdded: new TodoModel()})} 
                 }/>
 }
 
@@ -57,7 +57,7 @@ const todoList = () => {
         } as CSSProperties;
         
         const getCardStyle = (index: number) : CSSProperties | undefined => {
-            if(potter.state.todoBeingEditedIndex !== index){
+            if(potter.state.indexOfTodoItemBeingEdited !== index){
                 return undefined;
             }else{
                 return {
@@ -71,7 +71,7 @@ const todoList = () => {
         return  <div>
                     {potter.context.repository.allTodos.map((currentTodo,index) => {
                         return  <div style={getCardStyle(index)} key={index} className="card" onClick={() => {
-                            potter.pushToState({todoBeingEditedIndex: index, todoBeingEdited: currentTodo});
+                            potter.pushToState({indexOfTodoItemBeingEdited: index, todoItemBeingEdited: currentTodo});
                         }}>
                                     <div style={displayLabelStyle}>
                                         {currentTodo.displayLabel}
@@ -90,8 +90,6 @@ const todoList = () => {
 }
 
 const inputFields = () => {
-    
-
     return  <div className="flex-grid" style={{marginTop: "10px"}}>
                 <div className="flex-col-8">
                     <input 
@@ -99,10 +97,10 @@ const inputFields = () => {
                         placeholder="Enter Todo's Title"
                         autoFocus={true}
                         onChange={(e) => {
-                            const activeTodo = potter.state.todoBeingAdded;
+                            const activeTodo = potter.state.todoItemBeingAdded;
                             if(activeTodo){
                                 activeTodo.displayLabel = e.target.value;
-                                potter.pushToState({todoBeingAdded: activeTodo});
+                                potter.pushToState({todoItemBeingAdded: activeTodo});
                             }
                         }}
                         className="inputFieldsStyle" />
@@ -111,15 +109,15 @@ const inputFields = () => {
                     <input 
                         type="button" 
                         className="inputFieldsStyle" value="Cancel"
-                        onClick={() => potter.pushToState({adding: false, todoBeingAdded: null})} />
+                        onClick={() => potter.pushToState({adding: false, todoItemBeingAdded: null})} />
                 </div>
                 <div className="flex-col-2">
                 <input 
                     type="button" 
                     className="inputFieldsStyle" value="Add"
-                    disabled={(!potter.state.todoBeingAdded || !potter.state.todoBeingAdded.displayLabel) ? true : false}
+                    disabled={(!potter.state.todoItemBeingAdded || !potter.state.todoItemBeingAdded.displayLabel) ? true : false}
                     onClick={() => {
-                        const activeTodo = potter.state.todoBeingAdded;
+                        const activeTodo = potter.state.todoItemBeingAdded;
                         if(activeTodo){
                             if(!activeTodo.displayLabel){
                                 alert("Type in a display label for your todo");
@@ -129,7 +127,7 @@ const inputFields = () => {
                                 const allTodos = potter.context.repository.allTodos;
                                 allTodos.push(activeTodo);
                                 potter.pushToRepository({allTodos: allTodos});
-                                potter.pushToState({adding: false, todoBeingAdded: null})}
+                                potter.pushToState({adding: false, todoItemBeingAdded: null})}
                             }
                         }
                      }/>

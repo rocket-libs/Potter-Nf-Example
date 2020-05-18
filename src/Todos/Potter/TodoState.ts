@@ -1,11 +1,11 @@
 import { PotterState } from "potter-nf";
 import TodoRepository from "./TodoRepository";
-import Todo from "./Todo";
+import TodoModel from "./TodoModel";
 
-export default class TodoState extends PotterState<TodoRepository,Todo>{
+export default class TodoState extends PotterState<TodoRepository,TodoModel>{
     mounted: boolean = false;
     adding: boolean = false;
-    todoBeingAdded: Todo | null = null;
-    todoBeingEdited: Todo | null = null;
-    todoBeingEditedIndex: number | null = null;
+    todoItemBeingAdded: TodoModel | null = null;
+    todoItemBeingEdited: TodoModel | null = null;
+    indexOfTodoItemBeingEdited: number | null = null;
 }

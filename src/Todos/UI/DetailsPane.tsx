@@ -14,7 +14,7 @@ export default function DetailsPane(props: IProps){
 }
 
 const body = () => {
-    if(potter.state.todoBeingEdited){
+    if(potter.state.todoItemBeingEdited){
         return todoBeingEditedUI();
     }else{
         return <div className="card">When you click on a todo on the left pane, you'll be able to edit it here</div>
@@ -30,23 +30,23 @@ const todoBeingEditedUI = () => {
                         className="inputFieldsStyle" 
                         placeholder="Enter Todo's Display Label"
                         onChange={(e) => {
-                            const todoBeingEdited = potter.state.todoBeingEdited;
+                            const todoBeingEdited = potter.state.todoItemBeingEdited;
                             if(todoBeingEdited){
                                 todoBeingEdited.displayLabel = e.target.value;
-                                potter.pushToState({todoBeingEdited: todoBeingEdited});
+                                potter.pushToState({todoItemBeingEdited: todoBeingEdited});
                             }
                         }}
-                        value={potter.state.todoBeingEdited?.displayLabel} />
+                        value={potter.state.todoItemBeingEdited?.displayLabel} />
                 </div>
                 <div>
                     <input 
                         type="checkbox" 
-                        value={potter.state.todoBeingEdited?.status === TodoStrings.done ? 1 : 0}
+                        value={potter.state.todoItemBeingEdited?.status === TodoStrings.done ? 1 : 0}
                         onChange={(_) => {
-                            const todoBeingEdited = potter.state.todoBeingEdited;
+                            const todoBeingEdited = potter.state.todoItemBeingEdited;
                             if(todoBeingEdited){
                                 todoBeingEdited.status = todoBeingEdited.status === TodoStrings.done ? TodoStrings.pending : TodoStrings.done;
-                                potter.pushToState({todoBeingEdited: todoBeingEdited});
+                                potter.pushToState({todoItemBeingEdited: todoBeingEdited});
                             }
                         }} /> 
                         Done

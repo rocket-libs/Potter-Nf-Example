@@ -1,6 +1,6 @@
 import TodoStrings from "../Data/TodoStrings";
 
-export default class Todo{
+export default class TodoModel{
     displayLabel: string;
     status: string = TodoStrings.pending;
     addedDate: Date = new Date();

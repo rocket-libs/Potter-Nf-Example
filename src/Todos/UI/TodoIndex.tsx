@@ -1,7 +1,7 @@
 import React, { useState, useEffect, CSSProperties } from "react";
 import TodoPotter from "../Potter/TodoPotter";
 import TodoRepository from "../Potter/TodoRepository";
-import Todo from "../Potter/Todo";
+import TodoModel from "../Potter/TodoModel";
 import TodoState from "../Potter/TodoState";
 import "../../flex-grid.css";
 import "../../ui.css";
@@ -10,17 +10,17 @@ import MasterPane from "./MasterPane";
 import DetailsPane from "./DetailsPane";
 
 
-interface IProps{
-    
-}
-
+/** A global instance of our Potter object. This is the work-horse that'll carry all our data
+ *  and allow us to read and write state variables.
+ * We've made it global and as it encapsulates all our data, this minimizes parameter passing.
+ */
 let potter: TodoPotter;
 
-export default function TodoIndex(props: IProps){
+export default function TodoIndex(){
     const [potterChangeId, setPotterChangeId] = useState(0);
-    potter = potter ?? new TodoPotter(new TodoRepository(), new Todo(), new TodoState());
+    potter = potter ?? new TodoPotter(new TodoRepository(), new TodoModel(), new TodoState());
     useEffect(() => {
-        const initializeShuttlerFx = () : () => void => {
+        const initializePotter = () : () => void => {
             const potterCleanup = potter.subscribe(() => setPotterChangeId(potter.context.changeId));
             if(!potter.state.mounted){
                 potter.pushToState({mounted: true});
@@ -29,13 +29,13 @@ export default function TodoIndex(props: IProps){
                 potterCleanup();
             }
         }
-        return initializeShuttlerFx();
+        return initializePotter();
     },[potterChangeId])
     
-    return render(props);
+    return render();
 }
 
-const render = (props: IProps) => {
+const render = () => {
     const containerStyle = {
         width:"100%", 
         border:"solid 1px #DDD", 
